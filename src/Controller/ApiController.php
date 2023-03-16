@@ -66,6 +66,20 @@ class ApiController extends AbstractController
 
     //
 
+    // Affichage des données choisies des musées dans la table "ListeEtLocalisationDesMuseesDeFrance" en fonction de la commune choisie
+
+    //
+
+    #[Route('/liste-commune/{commune}', name: 'liste-commune')]
+    public function listeCity($commune, ListeEtLocalisationDesMuseesDeFranceRepository $repository): JsonResponse
+    {
+        $results = $repository->findByCity($commune);
+
+        return new JsonResponse($results);
+    }
+
+    //
+
     // Affichage des données choisies des musées dans la table "ListeEtLocalisationDesMuseesDeFrance" en fonction du département sélectionné
 
     //
