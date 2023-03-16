@@ -39,28 +39,42 @@ class ListeEtLocalisationDesMuseesDeFranceRepository extends ServiceEntityReposi
         }
     }
 
-//    /**
-//     * @return ListeEtLocalisationDesMuseesDeFrance[] Returns an array of ListeEtLocalisationDesMuseesDeFrance objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('n.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return ListeEtLocalisationDesMuseesDeFrance[] Returns an array of ListeEtLocalisationDesMuseesDeFrance objects
+     */
+    public function findByDepartment($departement)
+    {
+        return $this->createQueryBuilder('n')
+            ->select(
+                'n.nomOfficielDuMusee',
+                'n.adresse',
+                'n.lieu',
+                'n.codePostal',
+                'n.commune',
+                'n.telephone',
+                'n.url'
+            )
+            ->where('n.departement = :departement')
+            ->setParameter('departement', $departement)
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?ListeEtLocalisationDesMuseesDeFrance
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findByRegion($region)
+    {
+        return $this->createQueryBuilder('n')
+            ->select(
+                'n.nomOfficielDuMusee',
+                'n.adresse',
+                'n.lieu',
+                'n.codePostal',
+                'n.commune',
+                'n.telephone',
+                'n.url'
+            )
+            ->where('n.regionAdministrative = :region')
+            ->setParameter('region', $region)
+            ->getQuery()
+            ->getResult();
+    }
 }
