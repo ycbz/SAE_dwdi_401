@@ -42,6 +42,24 @@ class ListeEtLocalisationDesMuseesDeFranceRepository extends ServiceEntityReposi
     /**
      * @return ListeEtLocalisationDesMuseesDeFrance[] Returns an array of ListeEtLocalisationDesMuseesDeFrance objects
      */
+    public function findByCity($commune)
+    {
+        return $this->createQueryBuilder('n')
+            ->select(
+                'n.nomOfficielDuMusee',
+                'n.adresse',
+                'n.lieu',
+                'n.codePostal',
+                'n.commune',
+                'n.telephone',
+                'n.url'
+            )
+            ->where('n.commune = :commune')
+            ->setParameter('commune', $commune)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findByDepartment($departement)
     {
         return $this->createQueryBuilder('n')
@@ -74,24 +92,6 @@ class ListeEtLocalisationDesMuseesDeFranceRepository extends ServiceEntityReposi
             )
             ->where('n.regionAdministrative = :region')
             ->setParameter('region', $region)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findByCity($commune)
-    {
-        return $this->createQueryBuilder('n')
-            ->select(
-                'n.nomOfficielDuMusee',
-                'n.adresse',
-                'n.lieu',
-                'n.codePostal',
-                'n.commune',
-                'n.telephone',
-                'n.url'
-            )
-            ->where('n.commune = :commune')
-            ->setParameter('commune', $commune)
             ->getQuery()
             ->getResult();
     }
