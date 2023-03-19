@@ -2,61 +2,45 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * ListeDesUser
+ * User
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQ_8D93D649E7927C74", columns={"email"})})
  * @ORM\Entity
  */
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User
 {
     /**
-     * @var int|null
+     * @var int
      *
-     * @ORM\Column(name="id", type="integer", nullable=true)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    public ?int $id = null;
-
-    // #[ORM\Column(length: 180, unique: true)]
+    private $id;
 
     /**
-     * @var int|null
+     * @var string
      *
-     * @ORM\Column(length= 180, unique=true)
+     * @ORM\Column(name="email", type="string", length=180, nullable=false)
      */
-    public ?string $email = null;
-
-    // #[ORM\Column]
+    private $email;
 
     /**
-     * @var int|null
+     * @var array
      *
-     * @ORM\Column()
+     * @ORM\Column(name="roles", type="json", nullable=false)
      */
-    public array $roles = [];
+    private $roles;
 
     /**
-     * @var string The hashed password
-     */
-
-
-    // #[ORM\Column]
-
-    /**
-     * @var int|null
+     * @var string
      *
-     * @ORM\Column()
+     * @ORM\Column(name="password", type="string", length=255, nullable=false)
      */
-    public ?string $password = null;
+    private $password;
 
     public function getId(): ?int
     {
@@ -75,26 +59,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
-    }
-
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return $this->roles;
     }
 
     public function setRoles(array $roles): self
@@ -104,10 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -119,22 +83,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
 
-    /**
-     * Méthode getUsername qui permet de retourner le champ qui est utilisé pour l'authentification.
-     *
-     * @return string
-     */
-    public function getUsername(): string
-    {
-        return $this->getUserIdentifier();
-    }
 }
